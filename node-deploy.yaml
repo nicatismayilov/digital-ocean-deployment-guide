@@ -1,0 +1,33 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: actions/checkout@master
+      # - uses: actions/setup-node@master
+      #   with:
+      #     node-version: 16
+      # - run: npm ci
+      # - run: npm run build
+      # - uses: appleboy/scp-action@master
+      #   with:
+      #     source: "*"
+      #     target: ~/app
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     key: ${{ secrets.SSH_KEY }}
+      #     rm: true
+      - uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            sh deploy.sh

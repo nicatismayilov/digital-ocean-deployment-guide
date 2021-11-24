@@ -1,0 +1,33 @@
+server {
+        root /var/www/galactech/html;
+
+        index index.html index.htm index.nginx-debian.html;
+
+        server_name galactechschool.com wwww.galactechschool.com;
+
+        location / {
+                try_files $uri $uri/ /index.html;
+        }
+}
+
+server {
+
+        root /var/www/galactech-admin/html;
+        index index.html;
+        server_name admin.galactechschool.com www.admin.galactechschool.com;
+        location / {
+                try_files $uri $uri/ /index.html;
+        }
+}
+
+server {
+        server_name api.galactechschool.com www.api.galactechschool.com;
+        location / {
+                proxy_pass http://localhost:5000; #port your app runs on
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+        }
+}
